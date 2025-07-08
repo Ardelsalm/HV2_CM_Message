@@ -889,14 +889,16 @@
             checklistData.push({ taskId, status, completion, remarks });
         });
         localStorage.setItem('homvogueChecklist', JSON.stringify(checklistData));
-        // console.log('Checklist data saved to local storage.'); // For debugging
+        console.log('Saving checklist data:', checklistData); // Added for debugging
     }
 
     // Function to load checklist data from local storage
     function loadChecklistData() {
+        console.log('Attempting to load checklist data.'); // Added for debugging
         const savedData = localStorage.getItem('homvogueChecklist');
         if (savedData) {
             const checklistData = JSON.parse(savedData);
+            console.log('Loaded data:', checklistData); // Added for debugging
             checklistData.forEach(task => {
                 const row = document.querySelector(`tr[data-task-id="${task.taskId}"]`);
                 if (row) {
@@ -915,9 +917,11 @@
                     if (remarksTextarea) {
                         remarksTextarea.value = task.remarks;
                     }
+                    console.log('Applying task:', task.taskId, 'Status:', task.status, 'Completion:', task.completion); // Added for debugging
                 }
             });
-            // console.log('Checklist data loaded from local storage.'); // For debugging
+        } else {
+            console.log('No saved checklist data found in local storage.'); // Added for debugging
         }
     }
 
@@ -925,6 +929,7 @@
         loadChecklistData(); // Load data on page load
 
         // Initial styling for elements not updated by change events (important for first load)
+        // These calls are still useful if there's no data in local storage, to apply initial HTML values' styles.
         document.querySelectorAll('.checklist-table select').forEach(select => updateStatus(select));
         document.querySelectorAll('.checklist-table input[type="number"]').forEach(input => updateCompletion(input));
 
