@@ -8,6 +8,27 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- 
+    Firestore Security Rules for this application:
+    These rules allow any authenticated user (including anonymous ones created by the app)
+    to read and write to the 'homvogueChecklist' collection specific to this app.
+
+    rules_version = '2';
+    service cloud.firestore {
+      match /databases/{database}/documents {
+        // Allow authenticated users to read and write to public data for this app
+        match /artifacts/{appId}/public/data/homvogueChecklist/{documentId} {
+          allow read, write: if request.auth != null;
+        }
+
+        // IMPORTANT: Ensure other collections are protected as needed.
+        // For example, private user data would be:
+        // match /artifacts/{appId}/users/{userId}/{collection=**} {
+        //   allow read, write: if request.auth != null && request.auth.uid == userId;
+        // }
+      }
+    }
+    -->
     <style>
         body {
             font-family: 'Roboto', sans-serif;
